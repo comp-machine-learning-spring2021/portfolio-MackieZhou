@@ -14,7 +14,8 @@ def recompute_centers(labels, data_pd, k):
     data_pd: dataset, a pandas DataFrame
     k: the number of centers, an integer
     """
-    centers = np.empty([0, 2])
+    n_features = data_pd.shape[1]
+    centers = np.empty([0, n_features])
 
     # loop over all clusters
     for i in range(k):
@@ -26,8 +27,9 @@ def recompute_centers(labels, data_pd, k):
                 cluster.append(j)
 
         subset = data_pd.iloc[cluster, :]
-        center = [subset.iloc[:, 0].mean(),
-                  subset.iloc[:, 1].mean()]
+        center = []
+        for i in range(n_features):
+            center.append(subset.iloc[:, i].mean())
         centers = np.vstack((centers, center))
 
     return centers
@@ -52,12 +54,20 @@ def my_kmeans(data, k, random):
     # stopping method: interate for a maximum of 300 times
     i = 0
     max_iter = 300
+    labels = np.zeros(data_pd.shape[0])
     while i <= max_iter:
         i += 1
 
         # reassign clusters
         dists = distance.cdist(data, centers, 'euclidean')
-        labels = np.argmin(dists, axis=1)
+
+        # stopping method: grouping assignments don't change
+        new_labels = np.argmin(dists, axis=1)
+        if (new_labels == labels).all():
+            break
+        else:
+            labels = new_labels
+
         # recompute centers
         centers = recompute_centers(labels, data_pd, k)
 
