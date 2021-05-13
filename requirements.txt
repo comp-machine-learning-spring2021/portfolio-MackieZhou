@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+sklearn
+scipy
+jupyter
+numpydoc
+pytest
+ipympl
