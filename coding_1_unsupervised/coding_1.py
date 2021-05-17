@@ -1,11 +1,13 @@
-# hw2.py
+# revision of hw2.py
 # Mackie Zhou
+# May 2021
 
 import pandas as pd
 import numpy as np
 
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
+from sklearn import preprocessing
 
 
 def recompute_centers(labels, data_pd, k):
@@ -35,7 +37,7 @@ def recompute_centers(labels, data_pd, k):
     return centers
 
 
-def my_kmeans(data, k, random):
+def my_kmeans(data, k):
     """
     data: the dataset as a numpy array
     k: the number of clusters as an integer
@@ -49,7 +51,7 @@ def my_kmeans(data, k, random):
     data_pd = pd.DataFrame(data)
 
     # randomly pick centers for the first iteration
-    centers = data_pd.sample(k, random_state=random)
+    centers = data_pd.sample(k, random_state=2021)
 
     # stopping method: interate for a maximum of 300 times
     i = 0
@@ -74,20 +76,25 @@ def my_kmeans(data, k, random):
     return (centers, labels)
 
 
-def calculate_within_cluster_sse(fit, data):
+def calculate_within_cluster_sse(centers, labels, data):
     """
-    fit: the fit get from sklearn
-    data: a numpy array
+    centers: list, centers got from a kmeans model
+    labels: list, labels of all points got from a kmeans model
+    data: np.ndarray, data
+
+    return: float, SSE
     """
     SSE = 0
 
     # Loop over all clusters
-    for c in range(len(fit.cluster_centers_)):
+    for c in range(len(centers)):
         # Extract the cluster's center and associated points:
-        center = [fit.cluster_centers_[c]]
-        points = data[np.where(fit.labels_ == c)]
+        center = centers[c]
+        points = data[np.where(np.array(labels) == c)]
         # Compute the following for each cluster:
-        cluster_spread = distance.cdist(points, center, 'euclidean')
+        # print("points\n", points)
+        # print("\ncenter\n", [center])
+        cluster_spread = distance.cdist(points, [center], 'euclidean')
         cluster_total = np.sum(cluster_spread)
         # Add this cluster's within sum of squares to within_cluster_sumsqs
         SSE += cluster_total
@@ -95,32 +102,52 @@ def calculate_within_cluster_sse(fit, data):
     return SSE
 
 
-def looping_kmeans(data, kList):
+def looping_kmeans_sklearn(data, kList):
     """
-    data: a numpy array
-    kList: a list of all k values
+    data: np.ndarray
+    kList: list, a list of all k values
+
+    return: a list of SSE
     """
 
     # 1. normalize the data
-    shape = data.shape
-    data_norm = np.empty([shape[0], 0])
-
-    for i in range(shape[1]):
-        var = data[:, i]
-        mx = np.max(var)
-        mn = np.min(var)
-
-        var_norm = (var - mn)/(mx - mn)
-        var_norm = np.around(var_norm, decimals=2)
-        data_norm = np.hstack((data_norm, np.array([var_norm]).transpose()))
+    # shape = data.shape
+    data_norm = preprocessing.normalize(data)
 
     # 2. calculate within-cluster SSE for each K
     SSE_list = []
-    for i in kList:
-        km = KMeans(n_clusters=i, init="k-means++",
-                    random_state=1, max_iter=200)
+    for k in kList:
+        km = KMeans(n_clusters=k, init="k-means++",
+                    random_state=2021, max_iter=300)
         fit = km.fit(data_norm)
-        SSE = calculate_within_cluster_sse(fit, data_norm)
+        centers = fit.cluster_centers_
+        labels = fit.labels_
+        SSE = calculate_within_cluster_sse(centers, labels, data_norm)
+        SSE_list.append(SSE)
+
+    return SSE_list
+
+
+def looping_kmeans_my(data, kList):
+    """
+    data: np.ndarray
+    kList: list, a list of all k values
+
+    return: a list of SSE
+    """
+
+    # 1. normalize the data
+    # shape = data.shape
+    data_norm = preprocessing.normalize(data)
+
+    # 2. calculate within-cluster SSE for each K
+    SSE_list = []
+    for k in kList:
+        centers, labels = my_kmeans(data_norm, k)
+
+        # print("centers\n", centers)
+        # print("\nlabels\n", labels)
+        SSE = calculate_within_cluster_sse(centers, labels, data_norm)
         SSE_list.append(SSE)
 
     return SSE_list
