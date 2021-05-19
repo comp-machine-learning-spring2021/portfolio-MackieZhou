@@ -1,4 +1,4 @@
-# Supervised ML: High Value Customers Identification
+# Unsupervised ML: High Value Customers Identification
 
 ## Introduction
 
@@ -13,7 +13,7 @@ This project takes a large portion of code from homework 2, with significant cha
 
 The dataset has 541909 entries where each entry contains 9 variables about one specific transaction, and we are going to focus on 4 of them: `CustomerID`, `Quantity`, `UnitPrice`, and `Country`. Below is a preview of the dataset.
 
-<img src="dataset_preview.png" alt="preview of the dataset"/>
+<img src="dataset_preview.png" alt="preview of the dataset" width="850"/>
 
 In this project, customers are the datapoints that I am interested in clustering. In other words, in the resulting dataset, each entry should include all the information I need for one customer. For each customer, I will sum up these three pieces of information:
 
@@ -23,7 +23,7 @@ In this project, customers are the datapoints that I am interested in clustering
 
 In processing the dataset, I will ignore entries where at least one of `Quantity`, `UnitPrice`, and `Country` variables is missing. I will multiple `Quantity` and `UnitPrice` to get the value of a transaction. Then, I will group the dataset by `CustomerID` and sum up the total amount of spending (`Total`) and total quantity (`Quantity`) for each customer. `Country` is a categorical variable, so I will convert the countries into integers. Since this retail business is UK-based, the most commonly appeared country is the United Kingdom, which is not surprising. Some other countries that also appear in the dataset include France, Australia etc. Below is a preview of the resulting dataset.
 
-<img src="resulting_dataset_preview.png" width="350"/>
+<img src="resulting_dataset_preview.png" width="400"/>
 
 ## Looping KMeans and Efficacy Comparison
 

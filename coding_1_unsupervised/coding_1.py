@@ -1,4 +1,4 @@
-# revision of hw2.py
+# revision of hw2
 # Mackie Zhou
 # May 2021
 
