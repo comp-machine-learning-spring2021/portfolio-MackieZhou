@@ -1,10 +1,10 @@
-# revision of hw5
 # Mackie Zhou
 # May 2021
 
 import numpy as np
 import random
-from sklearn.svm import SVC
+
+from sklearn.ensemble import RandomForestClassifier
 
 
 def split_val_data(all_data, percent):
@@ -32,26 +32,28 @@ def split_val_data(all_data, percent):
     return val_data, data
 
 
-def ten_fold(features, target, kernel, degree=3):
-    """ten-fold cross-validation with SVM
+def random_forest_cross_val(n_fold, features, target, n_estimators, max_depth, max_features):
+    """n-fold cross-validation with Random Forest
 
     Args:
+        n_fold (int): n-fold cross validation
         features (numpy.ndarray): all features that will be fed into SVM
         target (np.ndarray): the actual classes of each datapoint
-        kernel (string): the kernel used in SVM
-        degree (int): degree of the polynomial kernel function 
+        n_estimators (string): the number of trees in the forest
+        max_depth (int): the maximum depth of the tree
+        max_features (int): the number of features to consider when looking for the best split
 
     Returns:
         float: cross-validated error
     """
 
     n = len(target)  # number of data points
-    group_n = n//10  # numbrt of data points in each group
+    group_n = n//n_fold  # numbrt of data points in each group
 
-    # implement ten_fold cross-val
+    # implement n-fold cross-val
     i = 0
     test_errors = []
-    while i < 9:
+    while i < (n_fold-1):
         # test data
         test_inds = list(range(n))[group_n*i:group_n*(i+1)]
         test_data = features[test_inds, :]
@@ -63,14 +65,12 @@ def ten_fold(features, target, kernel, degree=3):
         train_target = target[train_inds]
 
         # tune the model
-        if kernel == "poly":
-            SVM = SVC(kernel='poly', degree=degree, gamma='auto', C=1000)
-        else:
-            SVM = SVC(kernel=kernel, C=1000)
-        SVM.fit(train_data, train_target)
+        rf = RandomForestClassifier(
+            n_estimators=n_estimators, max_depth=max_depth, max_features=max_features, random_state=2021)
+        rf.fit(train_data, train_target)
 
         # calculate test error
-        test_preds = SVM.predict(test_data)
+        test_preds = rf.predict(test_data)
         test_error = np.mean((test_preds - test_target)**2)
         test_errors.append(test_error)
 
@@ -88,14 +88,12 @@ def ten_fold(features, target, kernel, degree=3):
     train_target = target[train_inds]
 
     # tune the model
-    if kernel == "poly":
-        SVM = SVC(kernel='poly', degree=degree, gamma='auto', C=1000)
-    else:
-        SVM = SVC(kernel=kernel, C=1000)
-    SVM.fit(train_data, train_target)
+    rf = RandomForestClassifier(
+        n_estimators=n_estimators, max_depth=max_depth, max_features=max_features, random_state=2021)
+    rf.fit(train_data, train_target)
 
     # calculate test error
-    test_preds = SVM.predict(test_data)
+    test_preds = rf.predict(test_data)
     test_error = np.mean((test_preds - test_target)**2)
     test_errors.append(test_error)
 
