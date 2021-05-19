@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import coding_1
 
-students = pd.read_csv("students_info.csv")
+students = pd.read_csv("coding_1_unsupervised\students_info.csv")
 justthree_np = students[["sleep", "coffee", "gpa"]].to_numpy()
 
 
