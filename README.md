@@ -27,7 +27,7 @@ The dataset used in this project is the [UK-High value Customers Identification]
 
 
 
-### 2. Customer Segmentation on the Credit Card Dataset (Unsupervised)
+### 2. Unsupervised ML: Credit Card Holder Segmentation
 
 **Keywords:** unsupervised machine learning, clustering, hierarchical clustering, spectral clustering, KMeans
 
