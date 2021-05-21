@@ -1,22 +1,19 @@
 # CSC 294 Final Portfolio - Mackie Zhou
 
-
-
 ## Me and My Portfolio
 
-I am Mackie Zhou, a sophomore majoring in Computer Science and Statistical and Data Sciences at Smith College. Welcome to my final portfolio for CSC 294 Computational Machine Learning!
+I am a sophomore majoring in Computer Science and Statistical and Data Sciences at Smith College. Welcome to my final portfolio for CSC 294 Computational Machine Learning!
 
+This semester, I got exposed to the amazing world of Machine Learning. Throughout the semester, I have learned clustering, prediction, classification, ensemble methods, efficacy, and neural networks. I am now (more) familiar with numpy, pandas, scikit learn, matplotlib.pyplot, seaborn and some other python libraries. Besides, algorithms and coding skills, I have learned and discussed fairness and ethical issues in machine learning with peers in class and have written a summary essay of a conference paper on the topic of machine learning fairness. This is the the most interesting, challenging, and rewarding class I took in the spring of 2021.
 
-The skills and expertise you have in machine learning
-The depth of your knowledge in the field
-Your interests beyond machine learning 
+In this final portfolio, I will focus on applications of machine learning in business and complete two unsupervised machine learning projects and one supervised machine learning project on three different datasets from Kaggle.
 
 
 
 
 ## Coding Projects
 
-### 1 Unsupervised ML: High Value Customers Identification
+### 1. Unsupervised ML: High Value Customers Identification
 
 **Keywords:**
 unsupervised machine learning, clustering, KMeans, elbowology, efficacy comparison
@@ -30,7 +27,7 @@ The dataset used in this project is the [UK-High value Customers Identification]
 
 
 
-### 2 Customer Segmentation on the Credit Card Dataset (Unsupervised)
+### 2. Customer Segmentation on the Credit Card Dataset (Unsupervised)
 
 **Keywords:** unsupervised machine learning, clustering, hierarchical clustering, spectral clustering, KMeans
 
@@ -43,7 +40,7 @@ Credit card users also have different behaviors. This credit card dataset contai
 
 
 
-### 3 Supervised ML: Company Bankruptcy Prediction
+### 3. Supervised ML: Company Bankruptcy Prediction
 
 **Keywords:**
 supervised machine learning, classification, ensemble method, random forest, cross-validation
